@@ -1,10 +1,16 @@
-import './App.css';
+import "./App.css";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import LandingPage from "./pages/LandingPage/LandingPage.jsx";
+import Home from "./pages/Home/Home.jsx";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Henry Food</h1>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={LandingPage} />
+        <Route path="/home" component={Home} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 

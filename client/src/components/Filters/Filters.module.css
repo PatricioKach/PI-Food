@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #d49a2d;
+  padding-bottom: 200px;
+  border-radius: 10px;
+  text-align: center;
+  justify-content: space-around;
+}
+/* 
+.container {
+  display: column;
+  background-color: #2d6ab3;
+  margin-left: 10px;
+  margin-right: 85%;
+  padding-bottom: 200px;
+  border-radius: 10px;
+  text-align: center;
+  justify-content: space-around;
+} */

@@ -23,6 +23,9 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
       },
       steps: {
+        type: DataTypes.JSON,
+      },
+      diet: {
         type: DataTypes.STRING,
       },
     },

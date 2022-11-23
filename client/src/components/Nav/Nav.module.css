@@ -1,0 +1,25 @@
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #d49a2d;
+  border-radius: 0px 0px 10px 10px;
+  width: 100%;
+}
+
+.formu {
+  display: flex;
+  padding-top: 12.5px;
+}
+
+.henryfood {
+  top: 2%;
+  left: 2%;
+  height: 75px;
+  width: 233px;
+  overflow: hidden;
+}
+.cubiertos {
+  height: 100px;
+}

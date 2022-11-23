@@ -1,89 +1,102 @@
-const { Recipe, diets } = require("../db");
+const { Recipe, Diet } = require("../db.js");
 const axios = require("axios");
 require("dotenv").config();
 const { apiKey } = process.env;
 
 const getRecipeByParams = async (req, res) => {
   const { name } = req.query;
+  const allDbRecipe = await Recipe.findAll({ include: Diet });
+  const allApiRecipe = await axios.get(
+    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true`
+  );
+  const apiMap = await allApiRecipe.data.results.map((e) => {
+    return {
+      name: e.title,
+      id: e.id,
+      summary: e.summary,
+      healthScore: e.healthScore,
+      steps: e.analyzedInstructions.map((e) => e.steps.map((e) => e.step)),
+      diet: e.diets.map((e) => e),
+    };
+  });
+  const concatRecipe = await apiMap.concat(await allDbRecipe);
   try {
-    const dbRecipe = await Recipe.findAll({
-      include: {
-        name: name,
-      },
-    });
-    console.log(dbRecipe);
-
-    if (!dbRecipe) {
-      const buscapi = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true`
-      );
-      const buscaName = await buscapi.data.results.filter((e) =>
-        e.title.includes(name)
-      );
-      res.json(buscaName);
+    if (!name) {
+      concatRecipe;
+      res.status(200).json(concatRecipe);
     } else {
-      res.json(dbRecipe);
+      const filter = await concatRecipe.filter((e) =>
+        e.name.toLowerCase().includes(name.toLowerCase())
+      );
+      (await filter.length)
+        ? res.status(200).send(filter)
+        : res.status(400).send("No se ha encontrado");
+      console.log(concatRecipe);
     }
   } catch (error) {
-    res.json("Lo sentimos, no se ha podido encontrar ninguna coincidencia");
     console.log(error);
+    res.json(error);
   }
 };
 
-module.exports = { getRecipeByParams };
+const getRecipeById = async (req, res) => {
+  const { id } = req.params;
 
-// const { name } = req.query;
-// try {
-//   const recipe = await recipes.findOne({ where: { name: name } });
-//   const buscapi = axios.get(
-//     `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true`
-//   );
-//   const buscaName = buscapi.find((e) => e.results.title === name);
+  try {
+    if (id.length > 8) {
+      const dbRecipe = await Recipe.findByPk(id);
+      res.json(dbRecipe);
+    } else {
+      const { data } = await axios.get(
+        `https://api.spoonacular.com/recipes/${id}/information?apiKey=${apiKey}&addRecipeInformation=true`
+      );
+      const recipeId = {
+        name: data.title,
+        id: data.id,
+        summary: data.summary,
+        healthScore: data.healthScore,
+        steps: data.analyzedInstructions.map((e) => e.steps.map((e) => e.step)),
+        diets: data.diets,
+      };
 
-//   if (!recipe) {
-//     res.json(buscaName);
-//   } else {
-//     res.json(recipe);
-//   }
-// } catch (error) {
-//   console.log(error);
-// }
+      console.log(recipeId);
+      res.json(recipeId);
+    }
+  } catch (error) {
+    res.send(error);
+  }
+};
 
-// const dbRecipe = await Recipe.findAll({
-//   include: {
-//     name: name,
-//   },
-// });
-// console.log(dbRecipe);
+const createRecipe = async (req, res) => {
+  const { name, summary, healthScore, steps, diet } = req.body;
 
-// if (!dbRecipe) {
-//   const buscapi = await axios.get(
-//     `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true`
-//   );
-//   const buscaName = await buscapi.data.results.filter((e) =>
-//     e.title.includes(name)
-//   );
-//   res.json(buscaName);
+  try {
+    const creaRec = await Recipe.create({
+      name,
+      summary,
+      healthScore,
+      steps,
+      diet,
+    });
+    const dieta = await Diet.findAll({
+      where: {
+        name: diet,
+      },
+    });
+    console.log(dieta);
+    await creaRec.addDiets(dieta);
+    // console.log(creaRec.diet);
+    // console.log(dieta);
+    // console.log(creaRec);
+    res.json(creaRec);
+  } catch (error) {
+    console.log(error);
+    res.json(error);
+  }
+};
 
-// const { name } = req.params;
-// try {
-//   const buscapi = await axios.get(
-//     `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&addRecipeInformation=true`
-//   );
-//   const buscaName = await buscapi.data.results.filter((e) =>
-//     e.title.includes(name)
-//   );
-//   if (!buscaName) {
-//     const dbRecipe = await Recipe.findAll({
-//       include: {
-//         name: name,
-//       },
-//     });
-//     res.json(dbRecipe);
-//   } else {
-//     res.json(buscaName);
-//   }
-// } catch (error) {
-//   res.json("Lo sentimos, no se ha encontrado ninguna coincidencia")
-//   console.log(error);
-// }
+module.exports = {
+  getRecipeByParams,
+  getRecipeById,
+  createRecipe,
+};

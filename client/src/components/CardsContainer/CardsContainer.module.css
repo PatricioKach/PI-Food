@@ -1,0 +1,7 @@
+.container {
+  display: column;
+  text-align: center;
+  justify-content: start;
+  flex: auto;
+  background-color: #6c2db3;
+}
