@@ -5,3 +5,9 @@
   justify-content: center;
   width: 100%;
 }
+
+.notNav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}

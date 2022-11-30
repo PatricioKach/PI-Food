@@ -15,8 +15,11 @@ const getRecipeByParams = async (req, res) => {
       id: e.id,
       summary: e.summary,
       healthScore: e.healthScore,
-      steps: e.analyzedInstructions.map((e) => e.steps.map((e) => e.step)),
-      diet: e.diets.map((e) => e),
+      steps: e.analyzedInstructions.map((e) =>
+        e.steps.map((e) => `${e.number} - ${e.step} `)
+      ),
+      image: e.image,
+      diets: e.diets,
     };
   });
   const concatRecipe = await apiMap.concat(await allDbRecipe);
@@ -78,6 +81,8 @@ const createRecipe = async (req, res) => {
       steps,
       diet,
     });
+    console.log(creaRec);
+
     const dieta = await Diet.findAll({
       where: {
         name: diet,
@@ -85,9 +90,7 @@ const createRecipe = async (req, res) => {
     });
     console.log(dieta);
     await creaRec.addDiets(dieta);
-    // console.log(creaRec.diet);
-    // console.log(dieta);
-    // console.log(creaRec);
+
     res.json(creaRec);
   } catch (error) {
     console.log(error);

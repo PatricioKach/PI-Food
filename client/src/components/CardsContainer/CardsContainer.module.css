@@ -1,7 +1,6 @@
-.container {
-  display: column;
-  text-align: center;
-  justify-content: start;
-  flex: auto;
-  background-color: #6c2db3;
+.cont {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 1100px;
+  max-width: 1400px;
 }

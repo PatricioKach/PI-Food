@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   background-color: #d49a2d;
-  padding-bottom: 200px;
+  margin-top: 10px;
+  padding-bottom: 300px;
   border-radius: 10px;
   text-align: center;
   justify-content: space-around;

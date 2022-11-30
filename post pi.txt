@@ -1,0 +1,8 @@
+{
+"name": "Guiso",
+"summary": "Comida con muchos ingredientes y condimentos, es un plato caliente",
+"healthScore": 100,
+"steps": {"1":"verduritas cortada en chiquito", "2":"lo pones en una olla con aceite", "3":"despues las legumbres ya remojadas", "4": "salsita de tomate"},
+"diet": "dieta invernal"
+}
+
