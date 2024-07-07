@@ -1,9 +1,9 @@
 import React from "react";
-import CardDetail from "../CardDetail/CardDetail";
+import Card from "../Card/Card";
 import style from "../CardsContainer/CardsContainer.module.css";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import getRecipes from "../../redux/actions/actions.js";
+import { getRecipes } from "../../redux/actions/actions.js";
 
 export default function CardsContainer() {
   const estadoRecipes = useSelector((state) => state.recipes);
@@ -18,13 +18,12 @@ export default function CardsContainer() {
     return (
       <div className={style.cont}>
         {estadoRecipes.map((rec, i) => {
-          console.log(rec.steps);
           return (
             <div key={`${rec.name}-${i}`}>
-              <CardDetail
+              <Card
                 name={rec.name}
                 id={rec.id}
-                summary={rec.summary && rec.summary.replace(/<[^>]+>/g, "")}
+                summary={rec.summary}
                 healthScore={rec.healthScore}
                 steps={rec.steps}
                 image={rec.image}
@@ -38,10 +37,3 @@ export default function CardsContainer() {
   }
   return null;
 }
-
-// name: data.title,
-// id: data.id,
-// summary: data.summary,
-// healthScore: data.healthScore,
-// steps: data.analyzedInstructions.map((e) => e.steps.map((e) => e.step)),
-// diets: data.diets,

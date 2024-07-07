@@ -15,9 +15,9 @@ const getRecipeByParams = async (req, res) => {
       id: e.id,
       summary: e.summary,
       healthScore: e.healthScore,
-      steps: e.analyzedInstructions.map((e) =>
-        e.steps.map((e) => `${e.number} - ${e.step} `)
-      ),
+      // steps: e.analyzedInstructions.map((e) =>
+      //   e.steps.map((e) => `${e.number} - ${e.step} `)
+      // ),
       image: e.image,
       diets: e.diets,
     };
@@ -26,6 +26,7 @@ const getRecipeByParams = async (req, res) => {
   try {
     if (!name) {
       concatRecipe;
+      console.log(allApiRecipe);
       res.status(200).json(concatRecipe);
     } else {
       const filter = await concatRecipe.filter((e) =>
@@ -34,10 +35,8 @@ const getRecipeByParams = async (req, res) => {
       (await filter.length)
         ? res.status(200).send(filter)
         : res.status(400).send("No se ha encontrado");
-      console.log(concatRecipe);
     }
   } catch (error) {
-    console.log(error);
     res.json(error);
   }
 };
@@ -56,13 +55,13 @@ const getRecipeById = async (req, res) => {
       const recipeId = {
         name: data.title,
         id: data.id,
-        summary: data.summary,
+        image: data.image,
+        summary: data.summary.replace(/<[^>]+>/g, ""),
         healthScore: data.healthScore,
         steps: data.analyzedInstructions.map((e) => e.steps.map((e) => e.step)),
-        diets: data.diets,
+        diets: data.diets.join(", "),
       };
 
-      console.log(recipeId);
       res.json(recipeId);
     }
   } catch (error) {
@@ -81,14 +80,12 @@ const createRecipe = async (req, res) => {
       steps,
       diet,
     });
-    console.log(creaRec);
 
     const dieta = await Diet.findAll({
       where: {
         name: diet,
       },
     });
-    console.log(dieta);
     await creaRec.addDiets(dieta);
 
     res.json(creaRec);

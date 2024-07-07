@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "../Filters/Filters.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import { getDiets } from "../../redux/actions/actions.js";
 
 export default function Filters() {
+  const estadoDiets = useSelector((state) => state.diets);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getDiets());
+  }, [dispatch]);
+  // console.log(
+  //   estadoDiets?.map((e) => {
+  //     return e.name;
+  //   })
+  // );
   return (
     <div className={style.container}>
       <h2>Filtrá tu busqueda</h2>
@@ -9,16 +23,11 @@ export default function Filters() {
         <header>Dietas</header>
         <select>
           <option placeholder="Elegí"></option>
-          <option>Gluten free</option>
-          <option>Ketogenic</option>
-          <option>Lacto-Vegetarian</option>
-          <option>Ovo-Vegetarian</option>
-          <option>Vegan</option>
-          <option>Pescetarian</option>
-          <option>Paleo</option>
-          <option>Primal</option>
-          <option>Low FODMAP</option>
-          <option>Whole30</option>
+          {
+            // estadoDiets?.map((e) => {
+            //   return <option>{e.name}</option>;
+            // })
+          }
         </select>
       </section>
       <section>
@@ -37,6 +46,8 @@ export default function Filters() {
           <option>Creado</option>
         </select>
       </section>
+
+      <button>FILTRAR</button>
     </div>
   );
 }

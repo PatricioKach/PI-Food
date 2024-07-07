@@ -4,3 +4,28 @@
   align-items: center;
   text-align: center;
 }
+
+.title {
+  position: absolute;
+  top: 40%;
+  left: 44%;
+  color: rgb(0, 0, 0);
+  border-radius: 3px;
+  background-color: rgb(197, 11, 11);
+  clip-path: polygon(-20% 0%, 120% 0%, 80% 100%, 20% 100%);
+
+  font-weight: 800;
+  padding: 10px;
+}
+
+/*
+ border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 100px solid #08B; 
+  clip-path: polygon(-20% 0%, 120% 0%, 80% 100%, 20% 100%);
+
+  clip-path: polygon(
+  0% 0%,  abajo a la izquierda vert izq-der,  arriba ala derecha hor arr-ab
+  100% 0%, abajo a la derecha vert izq-der, arriba a la izq hor arr-ab
+  80% 100%, arriba ala derecha vert izq-der, abajo a la izquierda hor arr-ab
+  20% 100%)  arriba a la izq hor arr-ab, abajo a la derecha hor arr-ab */

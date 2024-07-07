@@ -1,6 +1,6 @@
 const { Diet, Recipe } = require("../db.js");
 
-const getDiets = async (req, res) => {
+const getDietsDB = async (req, res) => {
   try {
     const allDiets = [
       "Gluten free",
@@ -46,4 +46,4 @@ const getAllRelatedRecipes = async (req, res) => {
   }
 };
 
-module.exports = { getDiets, getAllRelatedRecipes };
+module.exports = { getDietsDB, getAllRelatedRecipes };

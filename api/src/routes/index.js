@@ -8,7 +8,7 @@ const {
   createRecipe,
   // getAllRecipes,
 } = require("./recipes");
-const { getDiets, getAllRelatedRecipes } = require("./diets");
+const { getDietsDB, getAllRelatedRecipes } = require("./diets");
 
 const router = Router();
 
@@ -37,7 +37,7 @@ router.post("/recipes", createRecipe);
 //recibir datos por body
 // agregarlos con create o con bulkcreate a nuestra db
 
-router.get("/diets", getDiets);
+router.get("/diets", getDietsDB);
 //buscar todos los tipos en la base de datos
 //buscar en spoonacular tipos de datos y guardarlos en la db
 

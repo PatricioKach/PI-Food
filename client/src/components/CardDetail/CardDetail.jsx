@@ -1,35 +1,32 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getRecipeById } from "../../redux/actions/actions.js";
 import style from "../CardDetail/CardDetail.module.css";
-export default function CardDetail({ name, id, healthScore, image, diets }) {
+
+export default function CardDetail(props) {
+  const estadoRecipes = useSelector((state) => state.recipeDetail);
+  const { id } = props.match.params;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getRecipeById(id));
+  }, [dispatch]);
+
   return (
-    <div className={style.card}>
-      <h3>Name: {name}</h3>
+    <div>
+      <h3>{estadoRecipes.name}</h3>
+      <img src={estadoRecipes.image} alt={estadoRecipes.name} />
       <div>
-        <b>id: </b>
-        {id}
+        <b>summary: </b>
+        {estadoRecipes.summary}
       </div>
       <div>
-        <b>Health Score: </b> {healthScore}
+        <b>Steps: </b> {estadoRecipes.steps}
       </div>
-      <img src={image} />
       <div>
         <b>diets: </b>
-        {diets.map((e) => (
-          <div>-{e}, </div>
-        ))}
+        {estadoRecipes.diets}
       </div>
-      <Link to={`/recipes/${id}`}>More Details</Link>
     </div>
   );
-}
-
-{
-  /*  <div>
-   <b>summary: </b>
-   {summary}
- </div>
-   <div>
-        <b>Steps: </b> {steps}
-      </div> */
 }
